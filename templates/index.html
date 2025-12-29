@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Camera Price Prediction (GBR)</h2>
+<form method="post">
+<input name="megapixel" placeholder="Megapixel" required>
+<input name="sensor_size" placeholder="Sensor Size" required>
+<input name="iso_range" placeholder="ISO Range" required>
+<input name="fps" placeholder="FPS" required>
+<input name="weight" placeholder="Weight" required>
+<button type="submit">Predict</button>
+</form>
+{% if prediction %}<h3>Prediction: {{ prediction }}</h3>{% endif %}
+</body>
+</html>
