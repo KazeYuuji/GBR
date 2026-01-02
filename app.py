@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import joblib
 import numpy as np
@@ -159,32 +159,14 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/predict-page")
+def predict_page():
+    return render_template("index.html")
+
+
 @app.route("/")
 def home():
-    return """
-    <h1>📷 Camera GBR Model API</h1>
-    <p>Status: ✅ Running</p>
-    <p>Model: Gradient Boosting Regressor</p>
-    <p>Dataset: camera_dataset.csv (979 cameras)</p>
-    <p>R² Score: 0.8418 | RMSE: $322.10</p>
-    
-    <h3>📡 Endpoints:</h3>
-    <ul>
-        <li>POST /predict - Prediksi harga kamera</li>
-        <li>GET /brands - List semua brand</li>
-        <li>GET /health - Health check</li>
-    </ul>
-    
-    <h3>📝 Contoh Request (Mode 1):</h3>
-    <pre>
-{
-    "Brand": "Canon",
-    "Effective pixels": 12.0,
-    "Weight": 500,
-    "Dimensions": 120
-}
-    </pre>
-    """
+    return render_template("index.html")
 
 
 @app.route("/brands", methods=['GET'])
@@ -243,12 +225,8 @@ def test():
 
 
 if __name__ == "__main__":
-    print("\n📡 API Endpoints:")
-    print("   GET  /               - Home")
-    print("   GET  /health         - Health check")
-    print("   GET  /brands         - List brands")
-    print("   POST /predict        - Predict price")
-    print("   POST /test           - Quick test")
-    print("\n🚀 Server: http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_DEBUG", "False").lower() == "true"
+    app.run(debug=debug, host='0.0.0.0', port=port)
 
